@@ -15,6 +15,7 @@ function Button({
   onClick,
   children,
   disabled,
+  htmlType
 }: ButtonProps): React.ReactElement {
   const { isHovering, onMouseEnter, onMouseLeave } = useHoveringState();
 
@@ -68,6 +69,7 @@ function Button({
 
   return (
     <button
+      type={htmlType}
       style={style}
       onClick={disabled ? undefined : onClick}
       onMouseEnter={onMouseEnter}

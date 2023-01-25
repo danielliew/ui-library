@@ -1,8 +1,8 @@
-import Button from "./lib/components/Button";
+import { Button } from "../lib";
 
-function App() {
+function Demo() {
   return (
-    <div className="App">
+    <div>
       <h1>Ui Library</h1>
       <hr />
 
@@ -15,11 +15,15 @@ function App() {
         <Button disabled onClick={() => console.log("hi")}>
           Disabled
         </Button>
-        <Button size="sm" onClick={() => console.log("hi")}>small</Button>
-        <Button size="lg" onClick={() => console.log("hi")}>large</Button>
+        <Button size="sm" onClick={() => console.log("hi")}>
+          small
+        </Button>
+        <Button size="lg" onClick={() => console.log("hi")}>
+          large
+        </Button>
       </div>
     </div>
   );
 }
 
-export default App;
+export default Demo;

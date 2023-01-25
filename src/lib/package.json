@@ -1,0 +1,21 @@
+{
+  "name": "liew-i-library",
+  "version": "1.0.1",
+  "description": "daniel's ui-library",
+  "main": "./src/index.ts",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc && cp package.json README.md ./dist"
+  },
+  "keywords": [
+    "react",
+    "react-component"
+  ],
+  "author": "Daniel Liew (dliew.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.0.27",
+    "react": "^18.2.0",
+    "typescript": "^4.9.4"
+  }
+}
