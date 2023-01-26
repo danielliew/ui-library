@@ -9,10 +9,13 @@ const defaultColors = {
 
   background: "#ffffff",
 
+  icon: "#5f6368",
+
   border: "#000000",
 
   disabled: "#383838",
   disabledBackground: "#ddd",
+  disabledBackgroundLight: "#dedede",
   disabledBorder: "#ddd",
 
   hover: "#aaa",
@@ -38,9 +41,9 @@ const defaultPadding = {
 const defaultBorders = {
   xs: 1,
   sm: 1,
-  md: 1,
-  lg: 2,
-  xl: 3,
+  md: 2,
+  lg: 3,
+  xl: 4,
 };
 
 const defaultBorderRadius = {
@@ -60,8 +63,16 @@ const defaultBreakpoints = {
 };
 
 const defaultTransition = {
-  transition: ".25s",
+  transition: ".2s",
   transitionTimingFunction: "ease-in-out",
+};
+
+const defaultSpacing = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 20,
+  xl: 24,
 };
 
 export default {
@@ -73,4 +84,5 @@ export default {
   borderRadius: defaultBorderRadius,
   breakpoints: defaultBreakpoints,
   transition: defaultTransition,
+  spacing: defaultSpacing
 };

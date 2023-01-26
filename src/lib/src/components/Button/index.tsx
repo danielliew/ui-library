@@ -1,5 +1,7 @@
 import React, { CSSProperties, useMemo } from "react";
-import useHoveringState from "../../hooks/useHoverListener";
+import fontStyles from "../../utils/fonts/fonts.module.css";
+
+import useHoveringState from "../../hooks/useHoverHandler";
 import { borderRadius } from "../../utils/borderRadius";
 import { borders } from "../../utils/borders";
 import { colors } from "../../utils/colors";
@@ -15,7 +17,7 @@ function Button({
   onClick,
   children,
   disabled,
-  htmlType
+  htmlType,
 }: ButtonProps): React.ReactElement {
   const { isHovering, onMouseEnter, onMouseLeave } = useHoveringState();
 
@@ -30,6 +32,9 @@ function Button({
       transition: transition.transition,
       transitionTimingFunction: transition.transitionTimingFunction,
       fontSize: fontSize[size],
+      display: "inline-block",
+      fontFamily: "inherit",
+      fontWeight: 600
     };
 
     if (disabled) {
@@ -68,15 +73,22 @@ function Button({
   }, [type, isHovering]);
 
   return (
-    <button
-      type={htmlType}
-      style={style}
-      onClick={disabled ? undefined : onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+    <div
+      className={fontStyles.text}
+      style={{
+        display: "inline-block",
+      }}
     >
-      {children}
-    </button>
+      <button
+        type={htmlType}
+        style={style}
+        onClick={disabled ? undefined : onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        {children}
+      </button>
+    </div>
   );
 }
 
