@@ -65,6 +65,14 @@ function Button({
           borderColor: isHovering ? colors.hoverBackground : colors.border,
         };
         break;
+      case "text":
+        buttonStyle = {
+          ...buttonStyle,
+          padding: 0,
+          border: "none",
+          color: isHovering ? colors.hover : colors.primary,
+          backgroundColor: colors.primaryBackground
+        }
       default:
         break;
     }

@@ -34,6 +34,6 @@
   font-weight: lighter;
 }
 
-.button, .textinput, .text {
+.button, .textinput, .text, .dropdown {
   font-family: "Quicksand";
 }

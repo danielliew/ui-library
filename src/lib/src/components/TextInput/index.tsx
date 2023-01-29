@@ -53,6 +53,10 @@ function TextInput({
       backgroundColor: "transparent",
       width: "100%",
     };
+
+    if (disabled) {
+      return { ...inputStyle, cursor: "not-allowed" };
+    }
     return inputStyle;
   }, []);
 
@@ -76,7 +80,8 @@ function TextInput({
     if (disabled) {
       return {
         ...inputContainerStyle,
-        backgroundColor: colors.disabledBackgroundLight,
+        backgroundColor: colors.disabledBackground,
+        borderColor: colors.disabledBorder,
         cursor: "not-allowed",
       };
     }

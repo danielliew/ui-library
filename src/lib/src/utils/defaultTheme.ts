@@ -4,9 +4,6 @@ const defaultColors = {
   primary: "#000000",
   primaryBackground: "#ffffff",
 
-  secondary: "#213547",
-  secondaryBackground: "#213547",
-
   background: "#ffffff",
 
   icon: "#5f6368",
@@ -15,11 +12,11 @@ const defaultColors = {
 
   disabled: "#383838",
   disabledBackground: "#ddd",
-  disabledBackgroundLight: "#dedede",
   disabledBorder: "#ddd",
 
   hover: "#aaa",
   hoverBackground: "#222",
+  hoverBackgroundLight: '#f6f9fb'
 };
 
 const defaultFontSize = {

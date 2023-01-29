@@ -1,7 +1,7 @@
-import { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 
 export interface ButtonProps {
-  type?: "default" | "solid";
+  type?: "default" | "solid" | "text";
   size?: "sm" | "md" | "lg";
   onClick?: MouseEventHandler;
   children?: ReactNode;

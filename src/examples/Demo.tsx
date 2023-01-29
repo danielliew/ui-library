@@ -1,4 +1,5 @@
 import Button from "../lib/src/components/Button";
+import Dropdown from "../lib/src/components/Dropdown";
 import TextInput from "../lib/src/components/TextInput";
 import styles from "./Demo.module.css";
 
@@ -24,6 +25,9 @@ function Demo() {
           </Button>
           <Button size="lg" onClick={() => console.log("hi")}>
             large
+          </Button>
+          <Button type="text" onClick={() => console.log("hi")}>
+            text
           </Button>
         </div>
       </div>
@@ -63,6 +67,16 @@ function Demo() {
           />
         </div>
       </div>
+
+      <div>
+        <h2>Dropdown</h2>
+        <div className={styles.grid}>
+          <Dropdown anchor="Dropdown" items={["1", "2", "3"]} />
+          <Dropdown customAnchor={<Button type="text">Custom Anchor</Button>} items={["1", "2", "3"]} />
+        </div>
+      </div>
+
+      <hr />
     </div>
   );
 }
