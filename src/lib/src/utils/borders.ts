@@ -6,5 +6,6 @@ export const borders = {
   ...theme.borders,
   button: `${theme.borders.sm}${unit} solid ${colors.border}`,
   textInput: `${theme.borders.sm}${unit} solid ${colors.border}`,
-  textInputActive: `${theme.borders.md}${unit} solid ${colors.border}`
+  textInputActive: `${theme.borders.md}${unit} solid ${colors.border}`,
+  calendarItem: `${theme.borders.sm}${unit} none ${colors.border}`,
 };

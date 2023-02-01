@@ -1,0 +1,29 @@
+.calendar-top-bar {
+  display: flex;
+  align-items: center;
+}
+
+.calendar-top-bar-display {
+  display: flex;
+  justify-content: center;
+  grid-column: 1 / 6;
+}
+
+/*  */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+}
+
+.calendar-item-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.calendar-bottom-bar {
+  display: flex;
+  justify-content: end;
+}

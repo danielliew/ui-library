@@ -16,7 +16,8 @@ const defaultColors = {
 
   hover: "#aaa",
   hoverBackground: "#222",
-  hoverBackgroundLight: '#f6f9fb'
+  hoverBackgroundLight: '#f6f9fb',
+  hoverBackgroundGrey: "#ddd",
 };
 
 const defaultFontSize = {

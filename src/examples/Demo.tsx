@@ -1,4 +1,5 @@
 import Button from "../lib/src/components/Button";
+import Calendar from "../lib/src/components/Calendar";
 import Dropdown from "../lib/src/components/Dropdown";
 import TextInput from "../lib/src/components/TextInput";
 import styles from "./Demo.module.css";
@@ -73,6 +74,13 @@ function Demo() {
         <div className={styles.grid}>
           <Dropdown anchor="Dropdown" items={["1", "2", "3"]} />
           <Dropdown customAnchor={<Button type="text">Custom Anchor</Button>} items={["1", "2", "3"]} />
+        </div>
+      </div>
+
+      <div>
+        <h2>Calendar</h2>
+        <div className={styles.grid}>
+          <Calendar />
         </div>
       </div>
 

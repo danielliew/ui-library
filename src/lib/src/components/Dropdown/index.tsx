@@ -1,7 +1,6 @@
 import React, { CSSProperties, useMemo, useState } from "react";
 import useHoveringState from "../../hooks/useHoverHandler";
 import { colors } from "../../utils/colors";
-import { unit } from "../../utils/constants";
 import { padding } from "../../utils/padding";
 import Button from "../Button";
 import { DropdownProps } from "./Dropdown";

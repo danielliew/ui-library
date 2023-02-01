@@ -9,5 +9,5 @@ export interface TextInputProps {
   extra?: string;
   disabled?: boolean;
   multiline?: boolean;
-  leftIcon?: string | ReactElement
+  leftIcon?: 'search' | ReactElement
 }
