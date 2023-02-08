@@ -1,3 +1,7 @@
+import { CalendarViews } from "./Calendar";
+
+export const calendarViews: CalendarViews[] = ["month", "year"];
+
 export const subtractMonths = (d: Date, months: number): Date => {
   const newDate = new Date(d);
   newDate.setDate(1);
@@ -12,12 +16,27 @@ export const addMonths = (d: Date, months: number): Date => {
   return newDate;
 };
 
+export const subtractYears = (d: Date, years: number): Date => {
+  const newDate = new Date(d);
+  newDate.setDate(1);
+  newDate.setFullYear(d.getFullYear() - years);
+  return newDate;
+};
+
+export const addYears = (d: Date, years: number): Date => {
+  const newDate = new Date(d);
+  newDate.setDate(1);
+  newDate.setFullYear(d.getFullYear() + years);
+  return newDate;
+};
+
 export const getMonth = (
-  d: Date,
+  d: Date | number,
   type: "default" | "short" = "default"
 ): string => {
   let m = "";
-  switch (d.getMonth()) {
+  const month = typeof d === "number" ? d : d.getMonth();
+  switch (month) {
     case 0:
       m = "January";
       break;

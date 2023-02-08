@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo, useState } from "react";
+import React, { CSSProperties, useMemo, useRef, useState } from "react";
 import useHoveringState from "../../hooks/useHoverHandler";
 import { colors } from "../../utils/colors";
 import { padding } from "../../utils/padding";
@@ -8,6 +8,7 @@ import styles from "./Dropdown.module.css";
 import fontStyles from "../../utils/fonts/fonts.module.css";
 import { borderRadius } from "../../utils/borderRadius";
 import { transition } from "../../utils/transition";
+import useRefListener from "../../hooks/useRefListener";
 
 function Dropdown({
   items = [],
@@ -23,29 +24,50 @@ function Dropdown({
     zIndex: 100,
     width: "max-content",
     height: "max-content",
-    paddingBottom: padding.sm,
   };
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { screenSegments } = useRefListener(dropdownRef);
 
   const dropdownMenuStyle = useMemo<CSSProperties>(() => {
     let dropdownMenuStyle: CSSProperties = {
       position: "absolute",
-      top: "100%",
-      left: "0",
-      width: "100%",
+      width: "fit-content",
       display: "none",
       listStyle: "none",
       padding: 0,
       margin: 0,
       boxShadow: `rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px`,
+      minWidth: "100px",
+      backgroundColor: "transparent",
       fontFamily: "inherit",
       borderRadius: borderRadius.sm,
       overflow: "hidden",
+      zIndex: 9999,
     };
     if (anchorHover.isHovering || itemsHover.isHovering) {
       dropdownMenuStyle.display = "block";
     }
+    switch (screenSegments) {
+      case "topRight":
+        dropdownMenuStyle.top = "100%";
+        dropdownMenuStyle.right = "0";
+        break;
+      case "bottomLeft":
+        dropdownMenuStyle.bottom = "100%";
+        dropdownMenuStyle.left = "0";
+        break;
+      case "bottomRight":
+        dropdownMenuStyle.bottom = "100%";
+        dropdownMenuStyle.right = "0";
+        break;
+      default:
+        dropdownMenuStyle.top = "100%";
+        dropdownMenuStyle.left = "0";
+        break;
+    }
     return dropdownMenuStyle;
-  }, [anchorHover.isHovering, itemsHover.isHovering]);
+  }, [anchorHover.isHovering, itemsHover.isHovering, screenSegments]);
 
   const [dropdownItemHover, setDropdownItemHover] = useState<number | null>(
     null
@@ -75,6 +97,7 @@ function Dropdown({
 
   return (
     <div
+      ref={dropdownRef}
       className={fontStyles.dropdown}
       style={dropdownContainerStyle}
       onMouseEnter={anchorHover.onMouseEnter}

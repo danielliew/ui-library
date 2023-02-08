@@ -73,15 +73,19 @@ function Demo() {
         <h2>Dropdown</h2>
         <div className={styles.grid}>
           <Dropdown anchor="Dropdown" items={["1", "2", "3"]} />
-          <Dropdown customAnchor={<Button type="text">Custom Anchor</Button>} items={["1", "2", "3"]} />
+          <Dropdown
+            customAnchor={<Button type="text">Custom Anchor</Button>}
+            items={["1", "2", "3"]}
+          />
         </div>
       </div>
 
       <div>
         <h2>Calendar</h2>
-        <div className={styles.grid}>
-          <Calendar />
-        </div>
+        <Calendar onDateChange={(d) => console.log(d)} />
+
+        <p>on a card</p>
+        <Calendar card onDateHover={(d) => d.toISOString()} />
       </div>
 
       <hr />
