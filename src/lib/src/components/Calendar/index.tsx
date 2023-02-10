@@ -48,6 +48,7 @@ import {
   calendarCardStyle,
   calendarCardInnerStyle,
   hoverMenuContentStyle,
+  hoverMenuDateOverlay,
 } from "./Calendar.styles";
 import styles from "./Calendar.module.css";
 import fontStyles from "../../utils/fonts/fonts.module.css";
@@ -274,7 +275,14 @@ function Calendar({
         ? `0px 8px 10px 8px`
         : `8px 8px 2px 8px`;
 
-      dispatchStyle(style);
+      dispatchStyle(style, {
+        [`hoverMenuDateOverlay-${key}`]: {
+          show: true,
+          style: {
+            display: "block",
+          },
+        },
+      });
 
       setTimeout(() => {
         const dropdownMenuContainerParentRect: DOMRect =
@@ -370,7 +378,14 @@ function Calendar({
       }, 200);
     } else {
       style.opacity = 0;
-      dispatchStyle(style);
+      dispatchStyle(style, {
+        [`hoverMenuDateOverlay-${key}`]: {
+          show: false,
+          style: {
+            display: "none",
+          },
+        },
+      });
       setTimeout(
         () =>
           dispatchStyle({
@@ -622,13 +637,23 @@ function Calendar({
                         <span>{d.getDate()}</span>
                       </button>
                       {hoverMenu[key] && onDateHover && (
-                        <div
-                          className={`calendar-drop-down-${key}`}
-                          style={hoverMenu[key].style}
-                          ref={(e) => (hoverMenuContentRefs.current[key] = e)}
-                        >
-                          {onDateHover(d)}
-                        </div>
+                        <>
+                          <div
+                            className={`calendar-drop-down-${key}`}
+                            style={hoverMenu[key].style}
+                            ref={(e) => (hoverMenuContentRefs.current[key] = e)}
+                          >
+                            {onDateHover(d)}
+                          </div>
+                          <div
+                            style={{
+                              ...hoverMenuDateOverlay,
+                              ...(hoverMenu[`hoverMenuDateOverlay-${key}`]
+                                ? hoverMenu[`hoverMenuDateOverlay-${key}`].style
+                                : {}),
+                            }}
+                          />
+                        </>
                       )}
                     </div>
                   );
