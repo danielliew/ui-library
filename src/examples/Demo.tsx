@@ -82,10 +82,35 @@ function Demo() {
 
       <div>
         <h2>Calendar</h2>
+
+        <p>basic calendar</p>
         <Calendar onDateChange={(d) => console.log(d)} />
 
         <p>on a card</p>
-        <Calendar card onDateHover={(d) => `${d.getDate()} this is a hover menu`} />
+        <Calendar
+          card
+          onDateHover={(d) => `${d.getDate()} this is a hover menu`}
+        />
+
+        <p>on hover menu that animates with different content sizes</p>
+        <Calendar
+          card
+          onDateHover={(d) => {
+            const date = d.getDate();
+            return date % 3 === 0 ? (
+              <div style={{ minWidth: 300, minHeight: 150 }}>
+                <h2>Larger drop down</h2>
+                <p>This React Element is sized 300x150 minimum explicitly. Content can be strings or react elements.</p>
+                <Button type="solid">Learn More</Button>
+                <h2 />
+              </div>
+            ) : date % 2 === 0 ? (
+              `less content in this date menu`
+            ) : (
+              `${d.getDate()} this is a hover menu. there is much more content in this date menu. the menu will risize based on the content!`
+            );
+          }}
+        />
       </div>
 
       <hr />
