@@ -75,15 +75,17 @@ export const calendarCardInnerStyle: CSSProperties = {
     borderRadius: borderRadius.md
 }
 
-export const hoverMenuStyle: CSSProperties = {
+export const hoverMenuContentStyle: CSSProperties = {
     position: "absolute",
-    width: "fit-content",
+    overflow: "auto",
     display: "none",
     listStyle: "none",
-    padding: 0,
     margin: 0,
     backgroundColor: "transparent",
     fontFamily: "inherit",
-    zIndex: 9999,
+    zIndex: 5,
     opacity: 0,
+    transition: `all 0.3s ease-in-out`,
+    minHeight: `100px`,
+    minWidth: `100px`,
 }

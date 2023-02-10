@@ -85,7 +85,7 @@ function Demo() {
         <Calendar onDateChange={(d) => console.log(d)} />
 
         <p>on a card</p>
-        <Calendar card onDateHover={(d) => d.toISOString()} />
+        <Calendar card onDateHover={(d) => `${d.getDate()} this is a hover menu`} />
       </div>
 
       <hr />

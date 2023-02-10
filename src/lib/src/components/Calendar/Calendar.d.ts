@@ -10,6 +10,7 @@ interface hoverMenuState {
 
 interface CalendarState {
   currentDate: Date;
+  currentDateKey: string;
   currentMonth: number;
   currentView: CalendarViews;
   dateFrom: Date;

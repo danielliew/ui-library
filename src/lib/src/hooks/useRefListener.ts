@@ -1,15 +1,16 @@
 import { RefObject, useEffect, useState } from "react";
 import { RefListenerState, screenSegments } from "./useRefListener.types";
 
-const threshold = 0.69;
+const thresholdY = 0.69;
+const thresholdX = 0.5;
 
 export const getScreenSegment = (
   boundingRect: DOMRect | undefined
 ): screenSegments => {
   const top = boundingRect?.top || 0;
   const left = boundingRect?.left || 0;
-  let screenSegments = top / window.innerHeight > threshold ? "bottom" : "top";
-  screenSegments += left / window.innerWidth > threshold ? "Right" : "Left";
+  let screenSegments = top / window.innerHeight >= thresholdY ? "bottom" : "top";
+  screenSegments += left / window.innerWidth > thresholdX ? "Right" : "Left";
   return screenSegments as screenSegments;
 };
 

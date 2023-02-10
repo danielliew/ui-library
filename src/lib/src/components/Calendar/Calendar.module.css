@@ -19,6 +19,7 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   width: 100%;
+  position: relative;
 }
 
 .calendar-year-grid {
@@ -39,18 +40,56 @@
   background-color: white;
 }
 
-.calendar-year-grid .calendar-item-container:nth-child(1) {
+.calendar-year-grid .calendar-item-container:nth-child(2) {
   border-top-left-radius: 10px;
 }
 
-.calendar-year-grid .calendar-item-container:nth-child(4) {
+.calendar-year-grid .calendar-item-container:nth-child(5) {
   border-top-right-radius: 10px;
 }
 
-.calendar-year-grid .calendar-item-container:nth-child(9) {
+.calendar-year-grid .calendar-item-container:nth-child(10) {
   border-bottom-left-radius: 10px;
 }
 
-.calendar-year-grid .calendar-item-container:nth-child(12) {
+.calendar-year-grid .calendar-item-container:nth-child(13) {
   border-bottom-right-radius: 10px;
+}
+
+.calendar-menu-container {
+  position: absolute;
+  min-width: 100px;
+  min-height: 100px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease-in-out;
+  padding-top: 5px;
+}
+
+.calendar-menu-container > .calendar-menu-arrow {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+  margin: 0px 0px 0px -3px;
+  background-color: rgb(0, 0, 0);
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.calendar-menu-container > .calendar-menu-content-container {
+  position: static;
+  background-color: rgb(255, 255, 255);
+  z-index: 2;
+  width: 100%;
+  flex: 1;
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  border-radius: 10px;
+  border: 1px solid transparent;
 }
