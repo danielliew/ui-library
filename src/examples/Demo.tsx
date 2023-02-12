@@ -6,7 +6,7 @@ import styles from "./Demo.module.css";
 
 function Demo() {
   return (
-    <div>
+    <div style={{ padding: `20px` }}>
       <h1>Ui Library</h1>
       <small>liew-i-library</small>
       <hr />
@@ -100,7 +100,10 @@ function Demo() {
             return date % 3 === 0 ? (
               <div style={{ minWidth: 300, minHeight: 150 }}>
                 <h2>Larger drop down</h2>
-                <p>This React Element is sized 300x150 minimum explicitly. Content can be strings or react elements.</p>
+                <p>
+                  This React Element is sized 300x150 minimum explicitly.
+                  Content can be strings or react elements.
+                </p>
                 <Button type="solid">Learn More</Button>
                 <h2 />
               </div>
@@ -111,9 +114,10 @@ function Demo() {
             );
           }}
         />
-      </div>
 
-      <hr />
+        <p>date range selection mode</p>
+        <Calendar selectType="range" />
+      </div>
     </div>
   );
 }

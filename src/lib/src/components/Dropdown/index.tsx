@@ -21,7 +21,7 @@ function Dropdown({
 
   const dropdownContainerStyle: CSSProperties = {
     position: "relative",
-    zIndex: 100,
+    zIndex: 3,
     width: "max-content",
     height: "max-content",
   };
@@ -43,7 +43,7 @@ function Dropdown({
       fontFamily: "inherit",
       borderRadius: borderRadius.sm,
       overflow: "hidden",
-      zIndex: 9999,
+      zIndex: 4,
     };
     if (anchorHover.isHovering || itemsHover.isHovering) {
       dropdownMenuStyle.display = "block";

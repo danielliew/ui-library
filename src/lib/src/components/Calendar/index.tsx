@@ -13,7 +13,6 @@ import {
   addDays,
   addMonths,
   daysOfTheWeek,
-  getDateOrdinal,
   getMonth,
   setDate,
   subtractDays,
@@ -23,6 +22,9 @@ import {
   calendarViews,
   subtractYears,
   addYears,
+  isWithin,
+  stringifyDate,
+  isSameMonth,
 } from "./Calendar.utils";
 import { getScreenSegment } from "../../hooks/useRefListener";
 import {
@@ -33,6 +35,7 @@ import {
   hoveringKeyType,
   hoverMenuState,
   MonthItem,
+  StringifyDateOptionsInterface,
 } from "./Calendar";
 import {
   iconStyle,
@@ -49,6 +52,9 @@ import {
   calendarCardInnerStyle,
   hoverMenuContentStyle,
   hoverMenuDateOverlay,
+  calendarItemDateRangeStyle,
+  calendarItemDateRangeLowerBoundStyle,
+  calendarItemDateRangeUpperBoundStyle,
 } from "./Calendar.styles";
 import styles from "./Calendar.module.css";
 import fontStyles from "../../utils/fonts/fonts.module.css";
@@ -57,15 +63,24 @@ import { colors } from "../../utils/colors";
 const initialState = (d: Date): CalendarState => ({
   currentDate: d,
   currentDateKey: "",
-  currentMonth: d.getMonth(),
+  currentDateKeys: {
+    from: "",
+    to: "",
+  },
+  currentDates: {
+    from: d,
+    to: d,
+  },
+  currentMonth: `${d.getMonth()}`,
   currentView: "month",
   dateFrom: setDate(d, 1),
   dateTo: addMonths(setDate(d, 1), 1), // upper limit (not inclusive)
 });
 
 function Calendar({
-  onDateChange,
+  selectType = "date",
   card,
+  onDateChange,
   onDateHover,
   onMonthHover,
 }: CalendarProps) {
@@ -76,35 +91,47 @@ function Calendar({
   const {
     currentDate,
     currentDateKey,
+    currentDates,
+    currentDateKeys,
     currentMonth,
     currentView,
     dateFrom,
     dateTo,
   } = state;
 
-  const isToday = useMemo(
-    () => isSameDate(new Date(), currentDate),
-    [currentDateKey]
-  );
+  const isToday = useMemo(() => {
+    const today = new Date();
+    if (selectType === "range") return isSameMonth(dateFrom, today);
+    return isSameDate(today, currentDate);
+  }, [currentDateKey, dateFrom.toISOString()]);
 
   const toggleToday = () => {
-    if (currentView === "year") {
+    const today = new Date();
+    if (selectType === "range") {
+      return setState((s) => ({
+        ...s,
+        currentDate: today,
+        currentMonth: `${today.getMonth()}`,
+        dateFrom: setDate(today, 1),
+        dateTo: addMonths(setDate(today, 1), 1), // upper limit (not inclusive)
+      }));
+    } else if (currentView === "year") {
       return setState((s) => {
-        s.currentDate = new Date();
-        s.currentMonth = new Date().getMonth();
-        s.dateFrom = new Date();
+        s.currentDate = today;
+        s.currentMonth = `${today.getMonth()}`;
+        s.dateFrom = today;
         s.dateFrom.setMonth(0, 1);
         s.dateTo = addYears(s.dateFrom, 1);
         return { ...s };
       });
     }
-    setState(initialState(new Date()));
+    setState(initialState(today));
   };
 
   const setCurrentView = (currentView: CalendarViews) => {
     setState((s) => {
       if (currentView === "year") {
-        s.currentMonth = s.currentDate.getMonth();
+        s.currentMonth = `${s.currentDate.getMonth()}`;
         s.dateFrom.setMonth(0, 1);
         s.dateTo = addYears(s.dateFrom, 1);
       } else if (currentView === "month") {
@@ -116,11 +143,6 @@ function Calendar({
   };
 
   const setCurrentDate = (currentDate: Date, currentDateKey: string) => {
-    setState((s) => ({
-      ...s,
-      currentDate,
-      currentDateKey,
-    }));
     if (hovering === currentDateKey) {
       setHoverMenu((h) => ({
         ...h,
@@ -132,11 +154,65 @@ function Calendar({
         },
       }));
     }
+    if (selectType === "range") {
+      const fromBeforeNewDate =
+        currentDates.from.getTime() < currentDate.getTime();
+      return setState((s) => ({
+        ...s,
+        currentDates:
+          s.currentDates.from && s.currentDates.to
+            ? {
+                from: currentDate,
+                to: undefined,
+              }
+            : {
+                from: fromBeforeNewDate ? s.currentDates.from : currentDate,
+                to: fromBeforeNewDate ? currentDate : s.currentDates.from,
+              },
+        currentDateKeys:
+          s.currentDates.from && s.currentDates.to
+            ? {
+                from: currentDateKey,
+                to: undefined,
+              }
+            : {
+                from: fromBeforeNewDate
+                  ? s.currentDateKeys.from
+                  : currentDateKey,
+                to: fromBeforeNewDate ? currentDateKey : s.currentDateKeys.from,
+              },
+      }));
+    }
+    setState((s) => ({
+      ...s,
+      currentDate,
+      currentDateKey,
+    }));
   };
 
-  const setCurrentMonth = (month: number) => {
+  const setCurrentDatesFrom = (from: Date, key: string) =>
+    setState((s) => ({
+      ...s,
+      currentDates: { from, to: currentDates.to },
+      currentDateKeys: {
+        from: key,
+        to: currentDateKeys.to,
+      },
+    }));
+
+  const setCurrentDatesTo = (to: Date, key: string) =>
+    setState((s) => ({
+      ...s,
+      currentDates: { from: currentDates.from, to },
+      currentDateKeys: {
+        from: currentDateKeys.from,
+        to: key,
+      },
+    }));
+
+  const setCurrentMonth = (month: string) => {
     setState((s) => {
-      s.currentDate.setMonth(month);
+      s.currentDate.setMonth(parseInt(month));
       return {
         ...s,
         currentMonth: month,
@@ -149,7 +225,6 @@ function Calendar({
       case "month":
         setState((s) => ({
           ...s,
-          currentDate: subtractMonths(s.currentDate, 1),
           dateFrom: subtractMonths(s.dateFrom, 1),
           dateTo: subtractMonths(s.dateTo, 1),
         }));
@@ -157,7 +232,6 @@ function Calendar({
       case "year":
         setState((s) => ({
           ...s,
-          currentDate: subtractYears(s.currentDate, 1),
           dateFrom: subtractYears(s.dateFrom, 1),
           dateTo: subtractYears(s.dateTo, 1),
         }));
@@ -171,7 +245,6 @@ function Calendar({
       case "month":
         setState((s) => ({
           ...s,
-          currentDate: addMonths(s.currentDate, 1),
           dateFrom: addMonths(s.dateFrom, 1),
           dateTo: addMonths(s.dateTo, 1),
         }));
@@ -179,7 +252,6 @@ function Calendar({
       case "year":
         setState((s) => ({
           ...s,
-          currentDate: addYears(s.currentDate, 1),
           dateFrom: addYears(s.dateFrom, 1),
           dateTo: addYears(s.dateTo, 1),
         }));
@@ -427,12 +499,17 @@ function Calendar({
   };
 
   const displayDate = useMemo<string>(() => {
-    return `${
-      currentView === "month"
-        ? `${currentDate.getDate()}${getDateOrdinal(currentDate)} `
-        : ""
-    }${getMonth(currentDate)} ${currentDate.getFullYear()}`;
-  }, [currentDateKey, currentView]);
+    const options: StringifyDateOptionsInterface = {
+      noDate: currentView === "year",
+      shortMonth: selectType === "range",
+    };
+    if (selectType === "range") {
+      return `${stringifyDate(currentDates.from, options)}${
+        currentDates.to ? ` - ${stringifyDate(currentDates.to, options)}` : ""
+      }`;
+    }
+    return stringifyDate(currentDate, options);
+  }, [currentDateKey, currentDateKeys.from, , currentDateKeys.to, currentView]);
 
   const dates = useMemo<DateItem[][]>(() => {
     // 7x6 list of dates
@@ -472,24 +549,44 @@ function Calendar({
       displayDateList.pop();
     }
 
-    setHoverMenu((oldH) => {
-      const h: typeof hoverMenu = { ...oldH };
-      for (let i in displayDateList) {
-        for (let j in displayDateList[i]) {
-          const key = `${i}-${j}`;
-          const d =
-            displayDateList[i][j].date || displayDateList[i][j].unincludedDate;
-          if (d && isSameDate(d, currentDate)) {
-            setCurrentDate(currentDate, key);
+    if (onDateHover)
+      setHoverMenu((oldH) => {
+        const h: typeof hoverMenu = { ...oldH };
+        for (let i in displayDateList) {
+          for (let j in displayDateList[i]) {
+            const key = `${i}-${j}`;
+            const d =
+              displayDateList[i][j].date ||
+              displayDateList[i][j].unincludedDate;
+            if (
+              selectType === "date" &&
+              d &&
+              isSameDate(d, currentDate) &&
+              isSameMonth(currentDate, dateFrom)
+            ) {
+              setCurrentDate(currentDate, key);
+            } else if (
+              selectType === "range" &&
+              d &&
+              isSameDate(d, currentDates.from)
+            ) {
+              setCurrentDatesFrom(currentDates.from, key);
+            } else if (
+              selectType === "range" &&
+              d &&
+              currentDates.to &&
+              isSameDate(d, currentDates.to)
+            ) {
+              setCurrentDatesTo(currentDates.to, key);
+            }
+            h[key] = {
+              show: false,
+              style: hoverMenuContentStyle,
+            };
           }
-          h[key] = {
-            show: false,
-            style: hoverMenuContentStyle,
-          };
         }
-      }
-      return h;
-    });
+        return h;
+      });
 
     return displayDateList;
   }, [dateFrom]);
@@ -500,7 +597,7 @@ function Calendar({
       displayMonths.push({
         month: getMonth(i),
         monthShort: getMonth(i, "short"),
-        key: i,
+        key: `${i}`,
       });
     }
     return displayMonths;
@@ -608,12 +705,50 @@ function Calendar({
                   const d = date || unincludedDate;
                   if (!d) return null;
                   const key = `${i}-${j}`;
-                  const selected = isSameDate(d, currentDate);
+
+                  const isDateRangeLowerBound =
+                    selectType === "range" && isSameDate(currentDates.from, d);
+                  const isDateRangeUpperBound =
+                    selectType === "range" &&
+                    currentDates.to &&
+                    isSameDate(currentDates.to, d);
+
+                  const withinDateRange =
+                    selectType === "range" &&
+                    currentDates.to &&
+                    isWithin(currentDates.from, currentDates.to, d) &&
+                    !(isDateRangeLowerBound || isDateRangeUpperBound);
+
+                  let hoveringDateItem = hovering
+                    ? dates[parseInt(hovering.split("-")[0])][
+                        parseInt(hovering.split("-")[1])
+                      ]
+                    : null;
+                  const hoveringDate =
+                    hoveringDateItem?.date || hoveringDateItem?.unincludedDate;
+
+                  const onRangeToSelectionHover =
+                    selectType === "range" &&
+                    !currentDates.to &&
+                    hovering &&
+                    hoveringDate &&
+                    (currentDates.from.getTime() < hoveringDate.getTime()
+                      ? isWithin(currentDates.from, hoveringDate, d)
+                      : isWithin(hoveringDate, currentDates.from, d)) &&
+                    !isDateRangeLowerBound;
+
+                  const selected =
+                    (selectType === "date" && isSameDate(currentDate, d)) ||
+                    isDateRangeLowerBound ||
+                    isDateRangeUpperBound;
+
                   return (
                     <div
                       key={key}
                       className={styles["calendar-item-container"]}
-                      style={calendarItemContainerStyle}
+                      style={{
+                        ...calendarItemContainerStyle,
+                      }}
                       onClick={() => setCurrentDate(d, key)}
                       onMouseEnter={(e) => {
                         onHover(e, key, true);
@@ -626,6 +761,17 @@ function Calendar({
                         style={{
                           ...calendarItemStyle,
                           ...(selected ? calendarItemSelectedStyle : {}),
+
+                          ...(withinDateRange || onRangeToSelectionHover
+                            ? calendarItemDateRangeStyle
+                            : {}),
+                          ...(isDateRangeLowerBound
+                            ? calendarItemDateRangeLowerBoundStyle
+                            : {}),
+                          ...(isDateRangeUpperBound
+                            ? calendarItemDateRangeUpperBoundStyle
+                            : {}),
+
                           ...(hovering === key && !selected
                             ? calendarItemHoveringStyle
                             : {}),

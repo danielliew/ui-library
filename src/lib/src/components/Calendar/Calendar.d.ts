@@ -1,8 +1,10 @@
 import { CSSProperties, ReactElement } from "react";
 
+type CalendarSelectType = "date" | "range";
+
 type CalendarViews = "month" | "year";
 
-type hoveringKeyType = string | number;
+type hoveringKeyType = string;
 
 interface hoverMenuState {
   [hoveringKeyType: hoveringKeyType]: { show: boolean; style: CSSProperties };
@@ -11,7 +13,15 @@ interface hoverMenuState {
 interface CalendarState {
   currentDate: Date;
   currentDateKey: string;
-  currentMonth: number;
+  currentDates: {
+    from: Date;
+    to: Date | undefined;
+  };
+  currentDateKeys: {
+    from: string;
+    to: string | undefined;
+  };
+  currentMonth: string;
   currentView: CalendarViews;
   dateFrom: Date;
   dateTo: Date;
@@ -25,12 +35,18 @@ interface DateItem {
 interface MonthItem {
   month: string;
   monthShort: string;
-  key: number;
+  key: string;
 }
 
 interface CalendarProps {
+  card?: boolean;
+  selectType?: CalendarSelectType;
   onDateHover?: (date: Date) => ReactElement | string | null;
   onMonthHover?: (month: MonthItem) => ReactElement | string | null;
   onDateChange?: (date: Date) => any;
-  card?: boolean;
+}
+
+interface StringifyDateOptionsInterface {
+    noDate?: boolean;
+    shortMonth?: boolean;
 }

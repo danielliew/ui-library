@@ -18,6 +18,8 @@ const defaultColors = {
   hoverBackground: "#222",
   hoverBackgroundLight: '#f6f9fb',
   hoverBackgroundGrey: "#ddd",
+
+  calendarWithinBackground: '#ccc'
 };
 
 const defaultFontSize = {

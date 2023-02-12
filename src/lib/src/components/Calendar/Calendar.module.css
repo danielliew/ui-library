@@ -60,7 +60,7 @@
   position: absolute;
   min-width: 100px;
   min-height: 100px;
-  z-index: 2;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   transition: all 0.2s ease-in-out;
@@ -84,7 +84,7 @@
 .calendar-menu-container > .calendar-menu-content-container {
   position: static;
   background-color: rgb(255, 255, 255);
-  z-index: 2;
+  z-index: 4;
   width: 100%;
   flex: 1;
   box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,

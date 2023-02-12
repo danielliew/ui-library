@@ -1,4 +1,4 @@
-import { CalendarViews } from "./Calendar";
+import { CalendarViews, StringifyDateOptionsInterface } from "./Calendar";
 
 export const calendarViews: CalendarViews[] = ["month", "year"];
 
@@ -105,6 +105,12 @@ export const isSameDate = (d1: Date, d2: Date): boolean => {
   );
 };
 
+export const isSameMonth = (d1: Date, d2: Date): boolean => {
+  return (
+    d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear()
+  );
+};
+
 export const isBeforeDate = (d1: Date, d2: Date): boolean => {
   const newD1 = new Date(
     d1.getFullYear(),
@@ -131,6 +137,10 @@ export const isSameOrBefore = (d1: Date, d2: Date): boolean => {
   return isSameDate(d1, d2) || isBeforeDate(d1, d2);
 };
 
+export const isWithin = (from: Date, to: Date, d3: Date): boolean => {
+  return from.getTime() <= d3.getTime() && d3.getTime() <= to.getTime();
+};
+
 export const setDate = (d: Date, date: number): Date => {
   const newDate = new Date(d);
   newDate.setDate(date);
@@ -148,3 +158,12 @@ export const addDays = (d: Date, days: number): Date => {
   newDate.setDate(d.getDate() + days);
   return newDate;
 };
+
+export const stringifyDate = (
+  d: Date,
+  { noDate, shortMonth }: StringifyDateOptionsInterface = {}
+): string =>
+  `${noDate ? "" : `${d.getDate()}${getDateOrdinal(d)} `}${getMonth(
+    d,
+    shortMonth ? "short" : "default"
+  )} ${d.getFullYear()}`;

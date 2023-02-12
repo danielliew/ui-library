@@ -100,5 +100,17 @@ export const hoverMenuDateOverlay: CSSProperties = {
   height: "100%",
   backgroundColor: "transparent",
   zIndex: 5,
-  display: "none"
+  display: "none",
+};
+
+export const calendarItemDateRangeLowerBoundStyle: CSSProperties = {
+    //
+};
+
+export const calendarItemDateRangeUpperBoundStyle: CSSProperties = {
+    //
+};
+
+export const calendarItemDateRangeStyle: CSSProperties = {
+  backgroundColor: colors.calendarWithinBackground,
 };
