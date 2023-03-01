@@ -1,6 +1,6 @@
 {
   "name": "liew-i-library",
-  "version": "1.1.74",
+  "version": "1.1.8",
   "description": "daniel's ui-library",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,7 +9,7 @@
     "copy-files-css-html": "copyfiles -u 1 src/**/*.html src/**/*.css dist/",
     "copy-files-d-ts": "copyfiles -u 1 src/**/*.d.ts dist/",
     "build": "npm run clean && tsc && npm run copy-files-css-html && npm run copy-files-d-ts && cp package.json README.md ./dist && cp -r ./src/utils/fonts/Quicksand ./dist/utils/fonts",
-    "publish": "cd ./dist && npm publish"
+    "publish": "npm run build && cd ./dist && npm publish"
   },
   "keywords": [
     "react",

@@ -41,6 +41,8 @@ interface MonthItem {
 interface CalendarProps {
   card?: boolean;
   selectType?: CalendarSelectType;
+  primaryColor?: string;
+  backgroundColor?: string;
   onDateHover?: (date: Date) => ReactElement | string | null;
   onMonthHover?: (month: MonthItem) => ReactElement | string | null;
   onDateChange?: (date: Date) => any;

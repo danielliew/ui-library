@@ -80,6 +80,8 @@ const initialState = (d: Date): CalendarState => ({
 function Calendar({
   selectType = "date",
   card,
+  primaryColor = "black",
+  backgroundColor = "white",
   onDateChange,
   onDateHover,
   onMonthHover,
@@ -150,6 +152,7 @@ function Calendar({
           show: true,
           style: {
             borderColor: colors.primary,
+            ...customStyles.hoverMenuContentContainerSelected,
           },
         },
       }));
@@ -622,9 +625,36 @@ function Calendar({
     if (onDateChange) onDateChange(currentDate);
   }, [currentDateKey]);
 
+  const customStyles = useMemo(() => {
+    if (primaryColor || backgroundColor) {
+      return {
+        standard: {
+          color: primaryColor,
+          backgroundColor,
+        },
+        selectedCalendarItem: {
+          color: backgroundColor,
+          backgroundColor: primaryColor,
+        },
+        hoverMenuArrow: {
+          backgroundColor: primaryColor,
+        },
+        hoverMenuContentContainerSelected: {
+          borderColor: primaryColor,
+        },
+      };
+    }
+    return {};
+  }, [primaryColor, backgroundColor]);
+
   return (
     <div className={fontStyles.calendar} style={card ? calendarCardStyle : {}}>
-      <div style={card ? calendarCardInnerStyle : {}}>
+      <div
+        style={{
+          ...(card ? calendarCardInnerStyle : {}),
+          ...customStyles.standard,
+        }}
+      >
         <div className={styles[`calendar-grid`]}>
           <span
             style={calendarTopBarItemStyle}
@@ -691,7 +721,10 @@ function Calendar({
           >
             <div
               className={styles["calendar-menu-arrow"]}
-              style={hoverMenu.hoverMenuArrow.style}
+              style={{
+                ...hoverMenu.hoverMenuArrow.style,
+                ...customStyles.hoverMenuArrow,
+              }}
             />
             <div
               className={styles["calendar-menu-content-container"]}
@@ -760,7 +793,13 @@ function Calendar({
                       <button
                         style={{
                           ...calendarItemStyle,
-                          ...(selected ? calendarItemSelectedStyle : {}),
+                          ...customStyles.standard,
+                          ...(selected
+                            ? {
+                                ...calendarItemSelectedStyle,
+                                ...customStyles.selectedCalendarItem,
+                              }
+                            : {}),
 
                           ...(withinDateRange || onRangeToSelectionHover
                             ? calendarItemDateRangeStyle
