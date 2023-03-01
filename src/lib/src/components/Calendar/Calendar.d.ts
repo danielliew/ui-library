@@ -43,6 +43,7 @@ interface CalendarProps {
   selectType?: CalendarSelectType;
   primaryColor?: string;
   backgroundColor?: string;
+  dateBottomItem?: (date: Date) => ReactElement | string | null;
   onDateHover?: (date: Date) => ReactElement | string | null;
   onMonthHover?: (month: MonthItem) => ReactElement | string | null;
   onDateChange?: (date: Date) => any;

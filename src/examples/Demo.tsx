@@ -90,6 +90,7 @@ function Demo() {
         <Calendar
           card
           onDateHover={(d) => `${d.getDate()} this is a hover menu`}
+          dateBottomItem={(d) => "tet"}
         />
 
         <p>on hover menu that animates with different content sizes</p>

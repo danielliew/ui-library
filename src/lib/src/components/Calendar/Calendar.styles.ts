@@ -38,6 +38,13 @@ export const calendarItemStyle: CSSProperties = {
   width: fontSize.xl + 8,
   transition: transition.transition,
   transitionTimingFunction: transition.transitionTimingFunction,
+  display: "block",
+};
+
+export const calendarItemBottomStyle: CSSProperties = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 };
 
 export const calendarItemSelectedStyle: CSSProperties = {
@@ -104,11 +111,11 @@ export const hoverMenuDateOverlay: CSSProperties = {
 };
 
 export const calendarItemDateRangeLowerBoundStyle: CSSProperties = {
-    //
+  //
 };
 
 export const calendarItemDateRangeUpperBoundStyle: CSSProperties = {
-    //
+  //
 };
 
 export const calendarItemDateRangeStyle: CSSProperties = {

@@ -55,6 +55,7 @@ import {
   calendarItemDateRangeStyle,
   calendarItemDateRangeLowerBoundStyle,
   calendarItemDateRangeUpperBoundStyle,
+  calendarItemBottomStyle,
 } from "./Calendar.styles";
 import styles from "./Calendar.module.css";
 import fontStyles from "../../utils/fonts/fonts.module.css";
@@ -82,6 +83,7 @@ function Calendar({
   card,
   primaryColor = "black",
   backgroundColor = "white",
+  dateBottomItem,
   onDateChange,
   onDateHover,
   onMonthHover,
@@ -790,6 +792,7 @@ function Calendar({
                         onHover(e, key, false);
                       }}
                     >
+                      <div>
                       <button
                         style={{
                           ...calendarItemStyle,
@@ -821,6 +824,10 @@ function Calendar({
                       >
                         <span>{d.getDate()}</span>
                       </button>
+                      {dateBottomItem && date && (
+                        <div style={calendarItemBottomStyle}>{dateBottomItem(date) || null}</div>
+                      )}
+                      </div>
                       {hoverMenu[key] && onDateHover && (
                         <>
                           <div
